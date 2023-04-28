@@ -15,6 +15,7 @@ class Controller {
     static createTransactions(req, res) {
         let errors = req.query.errors;
         Model.createTransactions(req, (err, result) => {
+            console.log(result,"RESUL")
             if (err) {
                 console.error(err);
                 res.status(500).send("Error creating transaction: " + err.message);

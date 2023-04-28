@@ -3,11 +3,10 @@ const [Transactions, Customers] = require('./class.js');
 
 class Model {
   static Transactions(cb) {
-    let query = `SELECT t.*, c."name" AS "customer_name"
-    FROM "Transactions" t
-    JOIN "Customers" c ON t."customer_id" = c."id"
-    WHERE t."menu" LIKE '%<search_term>%' OR t."price" LIKE '%<search_term>%'
-    ORDER BY c."name" ASC, t."id" ASC;
+    let query = `SELECT * FROM "Transactions"
+    JOIN "Customer" ON "Transactions"."customer_id" = "Customer"."id"
+    WHERE "menu" LIKE '%nama_menu%' AND "price" LIKE '%harga%'
+    ORDER BY "Customer"."name" ASC;
     `;
 
     pool.query(query, (err, data) => {
