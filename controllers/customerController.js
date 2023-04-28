@@ -13,14 +13,21 @@ class Controller {
     }
 
     static createCustomers(req, res) {
-        let errors = req.query.errors;
-        Model.createCustomers(req, (err, result) => {
+        const { body } = req;
+
+        if (!body || !body.name) {
+            const error = new Error('Invalid request body');
+            error.statusCode = 400;
+            return res.status(400).json({ error: error.message });
+        }
+
+        Model.createCustomers(req, (err, data) => {
             if (err) {
                 console.error(err);
-                res.status(500).send("Error creating Customers: " + err.message);
-            } else {
-                res.status(200).json(result);
+                return res.status(500).json({ error: err.message });
             }
+            console.log('Customers created successfully');
+            res.status(200).json({ data: body });
         });
     }
     

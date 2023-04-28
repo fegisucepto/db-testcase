@@ -1,3 +1,4 @@
+const { values } = require("../models/class");
 const Model = require("../models/model")
 
 class Controller {
@@ -11,20 +12,26 @@ class Controller {
             }
         })
     }
-
     static createTransactions(req, res) {
-        let errors = req.query.errors;
-        Model.createTransactions(req, (err, result) => {
-            console.log(result,"RESUL")
+        const { body } = req;
+
+        if (!body || !body.menu || !body.qty || !body.customer_id || !body.price || !body.payment || !body.total || !body.created_at) {
+            const error = new Error('Invalid request body');
+            error.statusCode = 400;
+            return res.status(400).json({ error: error.message });
+        }
+
+        Model.createTransactions(req, (err, data) => {
             if (err) {
                 console.error(err);
-                res.status(500).send("Error creating transaction: " + err.message);
-            } else {
-                res.status(200).json(result);
+                return res.status(500).json({ error: err.message });
             }
+            console.log('Transaction created successfully');
+            res.status(200).json({ data: body });
         });
     }
-    
+
+
     static deleteTransactions(req, res) {
         const id = req.params.id;
         Model.deleteTransactions(id, (err, data) => {
@@ -35,7 +42,7 @@ class Controller {
             }
         });
     }
-    
+
 }
 
 

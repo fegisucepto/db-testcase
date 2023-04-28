@@ -40,10 +40,12 @@ class Model {
         console.error('Error executing query:', err);
         return cb(err);
       }
+
       console.log('Transaction created successfully');
-      cb(null, result);
+      cb(null);
     });
   }
+  
   static deleteTransactions(id, cb) {
     const query = {
       text: 'DELETE FROM "Transactions" WHERE id = $1 RETURNING *',
