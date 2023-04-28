@@ -3,11 +3,7 @@ const [Transactions, Customers] = require('./class.js');
 
 class Model {
   static Transactions(cb) {
-    let query = `SELECT * FROM "Transactions"
-    JOIN "Customer" ON "Transactions"."customer_id" = "Customer"."id"
-    WHERE "menu" LIKE '%nama_menu%' AND "price" LIKE '%harga%'
-    ORDER BY "Customer"."name" ASC;
-    `;
+    let query = `select * from "Transactions" order by "created_at" asc`;
 
     pool.query(query, (err, data) => {
       if (err) {
